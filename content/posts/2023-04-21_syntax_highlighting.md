@@ -1,6 +1,6 @@
 +++
 title = "Syntax highlighting"
-drafts = true
+draft = true
 +++
 
 This is a page summary, it should show up in the main posts area and provide
