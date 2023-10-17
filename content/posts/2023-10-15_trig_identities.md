@@ -1,11 +1,13 @@
 +++
-title = "MathJax Example"
-draft = true
+title = "Trigonometric Identities"
 +++
 
-This is an example post showing the use of MathJax for inline TeX rendering
+It's a bunch of trig identities copied verbatim from my personal notes.
+See the next post, [MathJax for Rendering TeX Statically](/posts/mathjax-for-static-tex/), to see how I got TeX to render on this site.
 
 <!-- more -->
+
+Or check out the source code for this page [here](https://github.com/ethanavatar/blog/blob/main/content/posts/2023-10-15_trig_identities.md).
 
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script>

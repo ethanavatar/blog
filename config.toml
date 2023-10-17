@@ -3,7 +3,7 @@ base_url = "https://blog.eevans.xyz"
 
 # The site title and description; used in feeds by default.
 title = "Birdbrain Hours"
-description = ""
+description = "A thing about stuff, or whatever."
 
 theme = "PaperMod"
 
@@ -19,10 +19,6 @@ minify_html = false
 # When set to "true", a search index is built from the pages and section
 # content for `default_language`.
 build_search_index = true
-
-taxonomies = [
-    { name = "tags", feed = true }
-]
 
 [markdown]
 # Whether to do syntax highlighting
@@ -61,7 +57,7 @@ show_reading_time = false
 show_word_count = false
 show_post_nav_links = true
 show_post_meta = false
-default_toc_open = false
+default_toc_open = true
 edit_post_url = "https://github.com/ethanavatar"
 copyright = "© 2023 Ethan Evans"
 date_format = "%Y-%m-%d"
@@ -70,7 +66,7 @@ navigation = [
 ]
 
 home_title = "Birdbrain Hours"
-home_content = ""
+home_content = "A thing about stuff, or whatever."
 social_icons = [
     { url = "https://github.com/ethanavatar", title = "GitHub", icon = "github" },
 ]
