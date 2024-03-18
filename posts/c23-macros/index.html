@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+<head>
+    
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Writing C23 Macros to Feed an Addiction</title>
+
+
+<meta name="keywords" content="keyword1, keyword2, keyword3">
+
+
+
+<meta name="description" content="A thing about stuff, or whatever.">
+
+
+
+
+
+<link rel="canonical" href="https:&#x2F;&#x2F;blog.eevans.xyz&#x2F;posts&#x2F;c23-macros&#x2F;">
+
+
+<link rel="stylesheet" href="https://blog.eevans.xyz/css/includes/scroll-bar.css">
+<link rel="stylesheet" href="https://blog.eevans.xyz/css/styles.css">
+<link rel="stylesheet" href="https://blog.eevans.xyz/css/override.css">
+
+
+
+
+
+
+
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+    </style>
+    
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+    
+</noscript>
+
+
+
+    
+</head>
+<body class=" dark" id="top">
+    
+    
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https:&#x2F;&#x2F;blog.eevans.xyz" accesskey="h" title="Birdbrain Hours (Alt + H)">
+                Birdbrain Hours
+            </a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch">
+                    <li></li>
+                </ul>
+            </div>
+        </div>
+        
+        <ul id="menu">
+            
+            
+            
+            <li>
+                <a href="https:&#x2F;&#x2F;blog.eevans.xyz&#x2F;archive" title="Archive">
+                    <span>Archive</span>
+                    
+                </a>
+            </li>
+            
+        </ul>
+        
+    </nav>
+</header>
+
+    
+    <main class="main">
+        
+<article class="post-single">
+  <header class="post-header">
+      <div class="breadcrumbs">
+          <a href="https:&#x2F;&#x2F;blog.eevans.xyz">Home</a>&nbsp;»&nbsp;
+          <a href="https://blog.eevans.xyz/posts/">Posts</a>&nbsp;»&nbsp;
+          <a href="https:&#x2F;&#x2F;blog.eevans.xyz&#x2F;posts&#x2F;c23-macros&#x2F;">Writing C23 Macros to Feed an Addiction</a>
+      </div>
+      <h1 class="post-title">Writing C23 Macros to Feed an Addiction</h1>
+      
+      
+  </header>
+
+  
+  
+
+<div class="toc">
+    <details  open>
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner">
+            <ul>
+                
+                <li>
+                    <a href="#the-beginning" aria-label="The Beginning">The Beginning</a>
+                    
+                </li>
+                
+                <li>
+                    <a href="#enter-c23" aria-label="Enter C23">Enter C23</a>
+                    
+                </li>
+                
+                <li>
+                    <a href="#the-macros" aria-label="The Macros">The Macros</a>
+                    
+                </li>
+                
+                <li>
+                    <a href="#full-code" aria-label="Full code">Full code</a>
+                    
+                </li>
+                
+            </ul>
+        </div>
+    </details>
+</div>
+
+
+  
+
+  
+  <div class="post-content">
+      <span id="continue-reading"></span>
+<p>Perhaps it was a mistake to learn Rust, because now that I’ve experienced errors-as-values, It feels like I will never be able to live without it, and every colaborative codebase I will ever work on from now on will be <code>try-catch</code> riddled agony. Actually, It’s not even just at work. Even in my personal projects (which are rarely written in Rust nowadays), I sometimes find myself spending more time than I should implementing <code>Result</code> and a bunch of unnecessary composition methods to go along with it.</p>
+<p>I don’t think I’m alone in this, right? I’m willing to bet theres a lot of recovering Rust programmers who have had their fair share of trying to turn other languages into Rust.</p>
+<p>On the other hand, I’ve been writing a lot of C recently. I think theres something nice about using a language that doesn’t have any big ideas. It lets you focus more on actually getting things done instead of contemplating the spider-web of abstractions. Regardless, It doesn’t keep me away from the urge of making it just a little bit more Rusty.</p>
+<p>And the traditional ways of handling/categorizing errors in C basically amounts to returning <code>NULL</code> or <code>false</code> (and using out params), which leaves quite a bit to be desired in my opinion. So I like to believe my urge is a bit justified.</p>
+<h2 id="the-beginning">The Beginning<a class="anchor" aria-hidden="true" href="#the-beginning" hidden="">#</a>
+</h2>
+<p>Long story short, I want <code>Result</code> monads in C. The concept of it is pretty simple. It’s just a struct that holds 2 potential values. So lets try that out on a sum function; for now, ignoring any error situations:</p>
+<pre data-lang="c" style="background-color:#282828;color:#fdf4c1aa;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#fa5c4b;">typedef struct </span><span>{
+</span><span>    </span><span style="color:#fa5c4b;">int</span><span> value;
+</span><span>    </span><span style="color:#fa5c4b;">char </span><span style="color:#fe8019;">*</span><span>error;
+</span><span>} </span><span style="color:#8ec07c;">Result</span><span>;
+</span><span>
+</span><span>Result </span><span style="color:#8ec07c;">add</span><span>(</span><span style="color:#fa5c4b;">int </span><span style="color:#fdf4c1;">a</span><span>, </span><span style="color:#fa5c4b;">int </span><span style="color:#fdf4c1;">b</span><span>) {
+</span><span>    </span><span style="color:#fa5c4b;">return </span><span>(Result) { .</span><span style="color:#fdf4c1;">value </span><span style="color:#fe8019;">=</span><span> a </span><span style="color:#fe8019;">+</span><span> b };
+</span><span>}
+</span></code></pre>
+<p>This works, but the obvious problem is that this struct is not reusable at all, unless everything we use it in also returns <code>Result&lt;int, char *&gt;</code>. So my next idea was to leave the struct anonymous and define it directly in the function declaration without any typedef:</p>
+<pre data-lang="c" style="background-color:#282828;color:#fdf4c1aa;" class="language-c "><code class="language-c" data-lang="c"><span>
+</span><span style="color:#fa5c4b;">struct </span><span>{ </span><span style="color:#fa5c4b;">int</span><span> value; </span><span style="color:#fa5c4b;">char </span><span style="color:#fe8019;">*</span><span>error; } </span><span style="color:#fdf4c1;">add(</span><span style="color:#fa5c4b;">int</span><span style="color:#fdf4c1;"> a, </span><span style="color:#fa5c4b;">int</span><span style="color:#fdf4c1;"> b) </span><span>{
+</span><span>    </span><span style="font-style:italic;color:#928374;">// Hmmm
+</span><span>}
+</span></code></pre>
+<p>Believe it or not, this is a valid way to use a struct. But now the problem is that the struct isn’t named, so now we can’t even use it inside the function. But what if we just use a compound literal of a struct defined the same way? It’ll be ugly, for sure, but it makes sense, right?</p>
+<pre data-lang="c" style="background-color:#282828;color:#fdf4c1aa;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#fa5c4b;">struct </span><span>{ </span><span style="color:#fa5c4b;">int</span><span> value; </span><span style="color:#fa5c4b;">char </span><span style="color:#fe8019;">*</span><span>error; } </span><span style="color:#fdf4c1;">add(</span><span style="color:#fa5c4b;">int</span><span style="color:#fdf4c1;"> a, </span><span style="color:#fa5c4b;">int</span><span style="color:#fdf4c1;"> b) </span><span>{
+</span><span>    </span><span style="color:#fa5c4b;">return </span><span>(</span><span style="color:#fa5c4b;">struct </span><span>{ </span><span style="color:#fa5c4b;">int</span><span> value; </span><span style="color:#fa5c4b;">char </span><span style="color:#fe8019;">*</span><span>error; }) { .</span><span style="color:#fdf4c1;">value </span><span style="color:#fe8019;">=</span><span> a </span><span style="color:#fe8019;">+</span><span> b };
+</span><span>}
+</span></code></pre>
+<p>Yea, its pretty messy, but we can fix it in post (macros), so lets see–</p>
+<pre style="background-color:#282828;color:#fdf4c1aa;"><code><span>&lt;source&gt;:6:12: error: returning &#39;struct (unnamed struct at &lt;source&gt;:7:9)&#39; from a function with incompatible result type &#39;struct (unnamed struct at &lt;source&gt;:1:1)&#39;
+</span></code></pre>
+<p>Oh, nevermind. Turns out that two identically defined anonymous structs will never be compatible with eachother, because the type checker doesn’t actually care if they’re identical, just if they are (or arent) the exact same type. This usually isn’t an issue because C asks very few questions when a cast is involved, but that is already when both structs in question are named. So at this point it seems pretty hopeless to create a reusable Result monad in C.</p>
+<h2 id="enter-c23">Enter C23<a class="anchor" aria-hidden="true" href="#enter-c23" hidden="">#</a>
+</h2>
+<p>C23 was officially released recently. It has a few really exciting features, like <code>constexpr</code>, <code>#embed</code>, <code>auto</code>, and <code>typeof</code>; check out <a rel="noopener" target="_blank" href="https://thephd.dev/c23-is-coming-here-is-what-is-on-the-menu">this wonderful post from ThePhD</a> about some of the coolest things that come with C23. The ones that stuck out to me the most were <code>auto</code> and <code>typeof</code>, two features that come from C++, which is, as expected, a little bit controversial amongst the simplicity purists.</p>
+<p>Starting with <code>typeof</code>, it is usually used to declare variables based on the type of a compile-time expression. For example:</p>
+<pre data-lang="c" style="background-color:#282828;color:#fdf4c1aa;" class="language-c "><code class="language-c" data-lang="c"><span style="font-style:italic;color:#928374;">// int x = 1;
+</span><span style="color:#fdf4c1;">typeof(</span><span style="color:#d3869b;">1</span><span style="color:#fdf4c1;">)</span><span> x </span><span style="color:#fe8019;">= </span><span style="color:#d3869b;">1</span><span>;
+</span></code></pre>
+<p>Interestingly, this also works in compund literals:</p>
+<pre data-lang="c" style="background-color:#282828;color:#fdf4c1aa;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#fa5c4b;">struct </span><span>{ </span><span style="color:#fa5c4b;">int</span><span> a; } x;
+</span><span>x </span><span style="color:#fe8019;">= </span><span>(</span><span style="color:#fdf4c1;">typeof(x)</span><span>) { .</span><span style="color:#fdf4c1;">a </span><span style="color:#fe8019;">= </span><span style="color:#d3869b;">1 </span><span>};
+</span></code></pre>
+<p>And, it can even get the return type of a function:</p>
+<pre data-lang="c" style="background-color:#282828;color:#fdf4c1aa;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#fa5c4b;">char </span><span style="color:#fe8019;">*</span><span style="color:#8ec07c;">hello</span><span>() {
+</span><span>    </span><span style="color:#fa5c4b;">return </span><span style="color:#b8bb26;">&quot;Hello, Sailor!&quot;</span><span>;
+</span><span>}
+</span><span>
+</span><span style="font-style:italic;color:#928374;">// char *x = hello();
+</span><span style="color:#fdf4c1;">typeof(hello())</span><span> x </span><span style="color:#fe8019;">= </span><span style="color:#fdf4c1;">hello()</span><span>;
+</span></code></pre>
+<p>This is exciting because it immediately solves the issue with two identical anonymous structs not being the same type. With <code>typeof</code>, we can get the actual anonymous struct instead of a different one that looks just like it. Now we can fix the code from before:</p>
+<pre data-lang="c" style="background-color:#282828;color:#fdf4c1aa;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#fa5c4b;">struct </span><span>{ </span><span style="color:#fa5c4b;">int</span><span> value; </span><span style="color:#fa5c4b;">char </span><span style="color:#fe8019;">*</span><span>error; } </span><span style="color:#fdf4c1;">add(</span><span style="color:#fa5c4b;">int</span><span style="color:#fdf4c1;"> a, </span><span style="color:#fa5c4b;">int</span><span style="color:#fdf4c1;"> b) </span><span>{
+</span><span>    </span><span style="color:#fa5c4b;">return </span><span>(</span><span style="color:#fdf4c1;">typeof(add(</span><span style="color:#d3869b;">0</span><span style="color:#fdf4c1;">, </span><span style="color:#d3869b;">0</span><span style="color:#fdf4c1;">))</span><span>) { .</span><span style="color:#fdf4c1;">value </span><span style="color:#fe8019;">=</span><span> a </span><span style="color:#fe8019;">+</span><span> b };
+</span><span>}
+</span></code></pre>
+<p>This actually compiles! And if we were to use this function, the <code>auto</code> keyword is there for the convinience of infering the type of the result struct:</p>
+<pre data-lang="c" style="background-color:#282828;color:#fdf4c1aa;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#fa5c4b;">auto</span><span> result </span><span style="color:#fe8019;">= </span><span style="color:#fdf4c1;">add(</span><span style="color:#d3869b;">1</span><span style="color:#fdf4c1;">, </span><span style="color:#d3869b;">2</span><span style="color:#fdf4c1;">)</span><span>;
+</span><span>
+</span><span style="color:#fa5c4b;">if </span><span>(result.</span><span style="color:#fdf4c1;">error</span><span>) {
+</span><span>    </span><span style="color:#fabd2f;">printf</span><span style="color:#fdf4c1;">(</span><span style="color:#b8bb26;">&quot;Error: </span><span style="color:#fdf4c1;">%s</span><span style="color:#b8bb26;">\n&quot;</span><span style="color:#fdf4c1;">, result.error)</span><span>;
+</span><span>} </span><span style="color:#fa5c4b;">else </span><span>{
+</span><span>    </span><span style="color:#fabd2f;">printf</span><span style="color:#fdf4c1;">(</span><span style="color:#b8bb26;">&quot;Result: </span><span style="color:#fdf4c1;">%d</span><span style="color:#b8bb26;">\n&quot;</span><span style="color:#fdf4c1;">, result.value)</span><span>;
+</span><span>}
+</span></code></pre>
+<p>Now we can finally slap some macros over it and call it a day.</p>
+<h2 id="the-macros">The Macros<a class="anchor" aria-hidden="true" href="#the-macros" hidden="">#</a>
+</h2>
+<p>To start cleaning up and making the types more reusable, we can use a macro to define the return type of a function:</p>
+<pre data-lang="c" style="background-color:#282828;color:#fdf4c1aa;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#fa5c4b;">#define </span><span style="color:#8ec07c;">RESULT</span><span>(</span><span style="color:#fdf4c1;">T</span><span>, </span><span style="color:#fdf4c1;">E</span><span>) </span><span style="color:#fa5c4b;">struct </span><span>{ </span><span style="color:#fa5c4b;">bool</span><span> is_ok; </span><span style="color:#fa5c4b;">union </span><span>{ T value; E error; }; }
+</span></code></pre>
+<p>Notice the addition of the <code>is_ok</code> field. This is so we can tag the result and indicate which field is valid.
+Also, <code>error</code> and <code>value</code> are now in a union, so they share the same space in memory, because only one of them will be used at a time.</p>
+<p>Now, to clean up the return types, we can make macros for <code>OK</code> and <code>ERR</code>:</p>
+<pre data-lang="c" style="background-color:#282828;color:#fdf4c1aa;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#fa5c4b;">#define </span><span style="color:#8ec07c;">OK</span><span>(</span><span style="color:#fdf4c1;">F</span><span>, </span><span style="color:#fdf4c1;">V</span><span>) (</span><span style="color:#fdf4c1;">typeof(F)</span><span>) { .</span><span style="color:#fdf4c1;">is_ok </span><span style="color:#fe8019;">= </span><span style="color:#d3869b;">true</span><span>, .</span><span style="color:#fdf4c1;">value </span><span style="color:#fe8019;">=</span><span> V }
+</span><span style="color:#fa5c4b;">#define </span><span style="color:#8ec07c;">ERR</span><span>(</span><span style="color:#fdf4c1;">F</span><span>, </span><span style="color:#fdf4c1;">E</span><span>) (</span><span style="color:#fdf4c1;">typeof(F)</span><span>) { .</span><span style="color:#fdf4c1;">is_ok </span><span style="color:#fe8019;">= </span><span style="color:#d3869b;">false</span><span>, .</span><span style="color:#fdf4c1;">error </span><span style="color:#fe8019;">=</span><span> E }
+</span></code></pre>
+<p>And now, we can implement a <code>checked_add</code> function that uses these macros, this time with checks for overflow and underflow:</p>
+<pre data-lang="c" style="background-color:#282828;color:#fdf4c1aa;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#fdf4c1;">RESULT(</span><span style="color:#fa5c4b;">int</span><span style="color:#fdf4c1;">, </span><span style="color:#fa5c4b;">char </span><span style="color:#fe8019;">*</span><span style="color:#fdf4c1;">) </span><span style="color:#8ec07c;">checked_add</span><span>(</span><span style="color:#fa5c4b;">int </span><span style="color:#fdf4c1;">a</span><span>, </span><span style="color:#fa5c4b;">int </span><span style="color:#fdf4c1;">b</span><span>) {
+</span><span>    </span><span style="color:#fa5c4b;">if </span><span>((b </span><span style="color:#fe8019;">&gt; </span><span style="color:#d3869b;">0</span><span>) </span><span style="color:#fe8019;">&amp;&amp; </span><span>(a </span><span style="color:#fe8019;">&gt;</span><span> INT_MAX </span><span style="color:#fe8019;">-</span><span> b)) </span><span style="color:#fa5c4b;">return </span><span style="color:#fdf4c1;">ERR(checked_add(</span><span style="color:#d3869b;">0</span><span style="color:#fdf4c1;">, </span><span style="color:#d3869b;">0</span><span style="color:#fdf4c1;">), </span><span style="color:#b8bb26;">&quot;Overflow&quot;</span><span style="color:#fdf4c1;">)</span><span>;
+</span><span>    </span><span style="color:#fa5c4b;">if </span><span>((b </span><span style="color:#fe8019;">&lt; </span><span style="color:#d3869b;">0</span><span>) </span><span style="color:#fe8019;">&amp;&amp; </span><span>(a </span><span style="color:#fe8019;">&lt;</span><span> INT_MIN </span><span style="color:#fe8019;">-</span><span> b)) </span><span style="color:#fa5c4b;">return </span><span style="color:#fdf4c1;">ERR(checked_add(</span><span style="color:#d3869b;">0</span><span style="color:#fdf4c1;">, </span><span style="color:#d3869b;">0</span><span style="color:#fdf4c1;">), </span><span style="color:#b8bb26;">&quot;Underflow&quot;</span><span style="color:#fdf4c1;">)</span><span>;
+</span><span>    </span><span style="color:#fa5c4b;">return </span><span style="color:#fdf4c1;">OK(checked_add(</span><span style="color:#d3869b;">0</span><span style="color:#fdf4c1;">, </span><span style="color:#d3869b;">0</span><span style="color:#fdf4c1;">), a </span><span style="color:#fe8019;">+</span><span style="color:#fdf4c1;"> b)</span><span>;
+</span><span>}
+</span></code></pre>
+<p>That looks pretty nice in my opinion. The one minor downside is that a dummy function call needs to be passed to <code>ERR</code> and <code>OK</code> so they can properly cast the compound literal. It could be shortened by making a temporary macro, but im not sure how worth it that is. For example:</p>
+<pre data-lang="c" style="background-color:#282828;color:#fdf4c1aa;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#fa5c4b;">#define </span><span style="color:#8ec07c;">T </span><span style="color:#fdf4c1;">checked_add(</span><span style="color:#d3869b;">0</span><span style="color:#fdf4c1;">, </span><span style="color:#d3869b;">0</span><span style="color:#fdf4c1;">)
+</span><span style="color:#fdf4c1;">RESULT(</span><span style="color:#fa5c4b;">int</span><span style="color:#fdf4c1;">, </span><span style="color:#fa5c4b;">char </span><span style="color:#fe8019;">*</span><span style="color:#fdf4c1;">) </span><span style="color:#8ec07c;">checked_add</span><span>(</span><span style="color:#fa5c4b;">int </span><span style="color:#fdf4c1;">a</span><span>, </span><span style="color:#fa5c4b;">int </span><span style="color:#fdf4c1;">b</span><span>) {
+</span><span>    </span><span style="color:#fa5c4b;">if </span><span>((b </span><span style="color:#fe8019;">&gt; </span><span style="color:#d3869b;">0</span><span>) </span><span style="color:#fe8019;">&amp;&amp; </span><span>(a </span><span style="color:#fe8019;">&gt;</span><span> INT_MAX </span><span style="color:#fe8019;">-</span><span> b)) </span><span style="color:#fa5c4b;">return </span><span style="color:#fdf4c1;">ERR(T, </span><span style="color:#b8bb26;">&quot;Overflow&quot;</span><span style="color:#fdf4c1;">)</span><span>;
+</span><span>    </span><span style="color:#fa5c4b;">if </span><span>((b </span><span style="color:#fe8019;">&lt; </span><span style="color:#d3869b;">0</span><span>) </span><span style="color:#fe8019;">&amp;&amp; </span><span>(a </span><span style="color:#fe8019;">&lt;</span><span> INT_MIN </span><span style="color:#fe8019;">-</span><span> b)) </span><span style="color:#fa5c4b;">return </span><span style="color:#fdf4c1;">ERR(T, </span><span style="color:#b8bb26;">&quot;Underflow&quot;</span><span style="color:#fdf4c1;">)</span><span>;
+</span><span>    </span><span style="color:#fa5c4b;">return </span><span style="color:#fdf4c1;">OK(T, a </span><span style="color:#fe8019;">+</span><span style="color:#fdf4c1;"> b)</span><span>;
+</span><span>}
+</span><span style="color:#fa5c4b;">#undef</span><span> T
+</span></code></pre>
+<p>And at the call site, the result can be infered with <code>auto</code> and error would be properly handled by checking the <code>is_ok</code> field of the result:</p>
+<pre data-lang="c" style="background-color:#282828;color:#fdf4c1aa;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#fa5c4b;">int </span><span style="color:#8ec07c;">main</span><span>() {
+</span><span>    </span><span style="color:#fa5c4b;">auto</span><span> result </span><span style="color:#fe8019;">= </span><span style="color:#fdf4c1;">checked_add(</span><span style="color:#d3869b;">1</span><span style="color:#fdf4c1;">, </span><span style="color:#d3869b;">2</span><span style="color:#fdf4c1;">)</span><span>;
+</span><span>
+</span><span>    </span><span style="color:#fa5c4b;">if </span><span>(</span><span style="color:#fe8019;">!</span><span>result.</span><span style="color:#fdf4c1;">is_ok</span><span>) {
+</span><span>        </span><span style="color:#fabd2f;">fprintf</span><span style="color:#fdf4c1;">(stderr, </span><span style="color:#b8bb26;">&quot;Error: </span><span style="color:#fdf4c1;">%s</span><span style="color:#b8bb26;">\n&quot;</span><span style="color:#fdf4c1;">, result.error)</span><span>;
+</span><span>        </span><span style="color:#fa5c4b;">return </span><span style="color:#d3869b;">1</span><span>;
+</span><span>    }
+</span><span>
+</span><span>    </span><span style="color:#fabd2f;">fprintf</span><span style="color:#fdf4c1;">(stderr, </span><span style="color:#b8bb26;">&quot;Result: </span><span style="color:#fdf4c1;">%d</span><span style="color:#b8bb26;">\n&quot;</span><span style="color:#fdf4c1;">, result.value)</span><span>;
+</span><span>}
+</span></code></pre>
+<p>But obviously, the preferable (lazy) way to do this is with <code>unwrap</code>. Which extracts the good value from the result and panics if the result wasn’t ok. In this macro, I used a ternary so that the macro can be treated as an expression rather than a statement:</p>
+<pre data-lang="c" style="background-color:#282828;color:#fdf4c1aa;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#fa5c4b;">void </span><span style="color:#8ec07c;">panic</span><span>(</span><span style="color:#fa5c4b;">const char </span><span style="color:#fe8019;">*</span><span style="color:#fdf4c1;">msg</span><span>) {
+</span><span>    </span><span style="color:#fabd2f;">fprintf</span><span style="color:#fdf4c1;">(stderr, </span><span style="color:#b8bb26;">&quot;</span><span style="color:#fdf4c1;">%s</span><span style="color:#b8bb26;">:</span><span style="color:#fdf4c1;">%d</span><span style="color:#b8bb26;"> Error: </span><span style="color:#fdf4c1;">%s</span><span style="color:#b8bb26;">\n&quot;</span><span style="color:#fdf4c1;">, </span><span style="color:#fabd2f;">__FILE__</span><span style="color:#fdf4c1;">, </span><span style="color:#fabd2f;">__LINE__</span><span style="color:#fdf4c1;">, msg)</span><span>;
+</span><span>    </span><span style="color:#fabd2f;">exit</span><span style="color:#fdf4c1;">(EXIT_FAILURE)</span><span>;
+</span><span>}
+</span><span style="color:#fa5c4b;">#define </span><span style="color:#8ec07c;">UNWRAP</span><span>(</span><span style="color:#fdf4c1;">R</span><span>) ((R).</span><span style="color:#fdf4c1;">is_ok </span><span style="color:#fe8019;">? </span><span>(R).</span><span style="color:#fdf4c1;">value </span><span style="color:#fe8019;">: </span><span>(</span><span style="color:#fdf4c1;">panic(</span><span style="color:#b8bb26;">&quot;Unwrap error&quot;</span><span style="color:#fdf4c1;">)</span><span>, (R).</span><span style="color:#fdf4c1;">error</span><span>))
+</span></code></pre>
+<p>Potentially, more of these could be made to more closely match the Rust API, but I think this is enough to get the desired effect. Something that im keen to try out myself is a <code>TRY</code> macro to emulate the effect of Rust’s <code>?</code> operator. However, Im not sure how possible that is whilst taking into consideration its usage as an expression and not a statement.</p>
+<h2 id="full-code">Full code<a class="anchor" aria-hidden="true" href="#full-code" hidden="">#</a>
+</h2>
+<p>Finally, this is everything put together:</p>
+<pre data-lang="c" style="background-color:#282828;color:#fdf4c1aa;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#fa5c4b;">#include </span><span style="color:#b8bb26;">&lt;stdio.h&gt;
+</span><span style="color:#fa5c4b;">#include </span><span style="color:#b8bb26;">&lt;stdlib.h&gt;
+</span><span>
+</span><span style="color:#fa5c4b;">#define </span><span style="color:#8ec07c;">RESULT</span><span>(</span><span style="color:#fdf4c1;">T</span><span>, </span><span style="color:#fdf4c1;">E</span><span>) </span><span style="color:#fa5c4b;">struct </span><span>{ </span><span style="color:#fa5c4b;">bool</span><span> is_ok; </span><span style="color:#fa5c4b;">union </span><span>{ T value; E error; }; }
+</span><span style="color:#fa5c4b;">#define </span><span style="color:#8ec07c;">OK</span><span>(</span><span style="color:#fdf4c1;">F</span><span>, </span><span style="color:#fdf4c1;">V</span><span>) (</span><span style="color:#fdf4c1;">typeof(F)</span><span>) { .</span><span style="color:#fdf4c1;">is_ok </span><span style="color:#fe8019;">= </span><span style="color:#d3869b;">true</span><span>, .</span><span style="color:#fdf4c1;">value </span><span style="color:#fe8019;">=</span><span> V }
+</span><span style="color:#fa5c4b;">#define </span><span style="color:#8ec07c;">ERR</span><span>(</span><span style="color:#fdf4c1;">F</span><span>, </span><span style="color:#fdf4c1;">E</span><span>) (</span><span style="color:#fdf4c1;">typeof(F)</span><span>) { .</span><span style="color:#fdf4c1;">is_ok </span><span style="color:#fe8019;">= </span><span style="color:#d3869b;">false</span><span>, .</span><span style="color:#fdf4c1;">error </span><span style="color:#fe8019;">=</span><span> E }
+</span><span>
+</span><span style="color:#fa5c4b;">void </span><span style="color:#8ec07c;">panic</span><span>(</span><span style="color:#fa5c4b;">const char </span><span style="color:#fe8019;">*</span><span style="color:#fdf4c1;">msg</span><span>) {
+</span><span>    </span><span style="color:#fabd2f;">fprintf</span><span style="color:#fdf4c1;">(stderr, </span><span style="color:#b8bb26;">&quot;</span><span style="color:#fdf4c1;">%s</span><span style="color:#b8bb26;">:</span><span style="color:#fdf4c1;">%d</span><span style="color:#b8bb26;"> Error: </span><span style="color:#fdf4c1;">%s</span><span style="color:#b8bb26;">\n&quot;</span><span style="color:#fdf4c1;">, </span><span style="color:#fabd2f;">__FILE__</span><span style="color:#fdf4c1;">, </span><span style="color:#fabd2f;">__LINE__</span><span style="color:#fdf4c1;">, msg)</span><span>;
+</span><span>    </span><span style="color:#fabd2f;">exit</span><span style="color:#fdf4c1;">(EXIT_FAILURE)</span><span>;
+</span><span>}
+</span><span style="color:#fa5c4b;">#define </span><span style="color:#8ec07c;">UNWRAP</span><span>(</span><span style="color:#fdf4c1;">R</span><span>) ((R).</span><span style="color:#fdf4c1;">is_ok </span><span style="color:#fe8019;">? </span><span>(R).</span><span style="color:#fdf4c1;">value </span><span style="color:#fe8019;">: </span><span>(</span><span style="color:#fdf4c1;">panic(</span><span style="color:#b8bb26;">&quot;Unwrap error&quot;</span><span style="color:#fdf4c1;">)</span><span>, (R).</span><span style="color:#fdf4c1;">error</span><span>))
+</span><span>
+</span><span style="color:#fa5c4b;">#define </span><span style="color:#8ec07c;">T </span><span style="color:#fdf4c1;">checked_add(</span><span style="color:#d3869b;">0</span><span style="color:#fdf4c1;">, </span><span style="color:#d3869b;">0</span><span style="color:#fdf4c1;">)
+</span><span style="color:#fdf4c1;">RESULT(</span><span style="color:#fa5c4b;">int</span><span style="color:#fdf4c1;">, </span><span style="color:#fa5c4b;">char </span><span style="color:#fe8019;">*</span><span style="color:#fdf4c1;">) </span><span style="color:#8ec07c;">checked_add</span><span>(</span><span style="color:#fa5c4b;">int </span><span style="color:#fdf4c1;">a</span><span>, </span><span style="color:#fa5c4b;">int </span><span style="color:#fdf4c1;">b</span><span>) {
+</span><span>    </span><span style="color:#fa5c4b;">if </span><span>(a </span><span style="color:#fe8019;">&gt; </span><span style="color:#d3869b;">0 </span><span style="color:#fe8019;">&amp;&amp;</span><span> b </span><span style="color:#fe8019;">&gt;</span><span> INT_MAX </span><span style="color:#fe8019;">-</span><span> a) </span><span style="color:#fa5c4b;">return </span><span style="color:#fdf4c1;">ERR(T, </span><span style="color:#b8bb26;">&quot;Int overflow&quot;</span><span style="color:#fdf4c1;">)</span><span>;
+</span><span>    </span><span style="color:#fa5c4b;">if </span><span>(a </span><span style="color:#fe8019;">&lt; </span><span style="color:#d3869b;">0 </span><span style="color:#fe8019;">&amp;&amp;</span><span> b </span><span style="color:#fe8019;">&lt;</span><span> INT_MIN </span><span style="color:#fe8019;">-</span><span> a) </span><span style="color:#fa5c4b;">return </span><span style="color:#fdf4c1;">ERR(T, </span><span style="color:#b8bb26;">&quot;Int underflow&quot;</span><span style="color:#fdf4c1;">)</span><span>;
+</span><span>    </span><span style="color:#fa5c4b;">return </span><span style="color:#fdf4c1;">OK(T, a </span><span style="color:#fe8019;">+</span><span style="color:#fdf4c1;"> b)</span><span>;
+</span><span>}
+</span><span style="color:#fa5c4b;">#undef</span><span> T
+</span><span>
+</span><span style="color:#fa5c4b;">int </span><span style="color:#8ec07c;">main</span><span>(</span><span style="color:#fa5c4b;">void</span><span>) {
+</span><span>    </span><span style="color:#fa5c4b;">int</span><span> a </span><span style="color:#fe8019;">= </span><span style="color:#d3869b;">34</span><span>, b </span><span style="color:#fe8019;">= </span><span style="color:#d3869b;">35</span><span>;
+</span><span>    </span><span style="color:#fa5c4b;">int</span><span> c </span><span style="color:#fe8019;">= </span><span style="color:#fdf4c1;">UNWRAP(checked_add(</span><span style="color:#d3869b;">34</span><span style="color:#fdf4c1;">, </span><span style="color:#d3869b;">35</span><span style="color:#fdf4c1;">))</span><span>;
+</span><span>    </span><span style="color:#fabd2f;">printf</span><span style="color:#fdf4c1;">(</span><span style="color:#b8bb26;">&quot;</span><span style="color:#fdf4c1;">%d</span><span style="color:#b8bb26;"> + </span><span style="color:#fdf4c1;">%d</span><span style="color:#b8bb26;"> = </span><span style="color:#fdf4c1;">%d</span><span style="color:#b8bb26;">\n&quot;</span><span style="color:#fdf4c1;">, a, b, c)</span><span>;
+</span><span>}
+</span></code></pre>
+<p>This is pretty nice in my opinion. At least its enough to help me sleep at night.</p>
+
+  </div>
+  
+
+  <footer class="post-footer">
+      
+
+    
+    
+
+
+<nav class="paginav">
+    
+    
+</nav>
+
+
+    
+    
+  </footer>
+
+</article>
+
+    </main>
+    
+    <footer class="footer">
+    
+    <span>© 2023 Ethan Evans</span>
+    
+    <span>
+        Powered by
+        <a href="https://www.getzola.org/" rel="noopener noreferrer" target="_blank">Zola</a> &
+        <a href="https://github.com/cydave/zola-theme-papermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+
+
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+
+
+
+
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+
+
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerText = 'copy';
+        function copyingDone() {
+            copybutton.innerText = 'copied!';
+            setTimeout(() => {
+                copybutton.innerText = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            // td containing LineNos
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            // table containing LineNos and code
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            // code blocks not having highlight as parent class
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+
+
+    
+</body>
+</html>
