@@ -1,5 +1,6 @@
 +++
 title = "Trigonometric Identities"
+draft = true
 +++
 
 It's a bunch of trig identities copied verbatim from my personal notes.

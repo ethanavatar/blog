@@ -1,5 +1,6 @@
 +++
 title = "MathJax for Rendering TeX Statically"
+draft = true
 +++
 
 Isn't it just the best when you're looking for math help online, and you find a site that renders TeX? Maybe its just me. But I got it working here anyway.
