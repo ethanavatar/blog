@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>Birdbrain Hours - Posts</title>
+    <subtitle>A thing about stuff, or whatever.</subtitle>
+    <link href="https://blog.eevans.xyz/posts/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://blog.eevans.xyz/posts/"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2024-03-17T00:00:00+00:00</updated>
+    <id>https://blog.eevans.xyz/posts/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Writing C23 Macros to Feed an Addiction</title>
+        <published>2024-03-17T00:00:00+00:00</published>
+        <updated>2024-03-17T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://blog.eevans.xyz/posts/c23-macros/" type="text/html"/>
+        <id>https://blog.eevans.xyz/posts/c23-macros/</id>
+        
+        <summary type="html">&lt;p&gt;&lt;em&gt;A monad is just a monoid in the category of endofunctors, what’s the problem?&lt;&#x2F;em&gt;&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+</feed>
