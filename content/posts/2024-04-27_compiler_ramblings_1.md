@@ -1,6 +1,7 @@
 
 +++
 title = "Misadventures in Compiler Design - Part 1"
+draft = true
 +++
 
 Im writing a compiler, and Im learning very quickly about how little I know.
