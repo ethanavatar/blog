@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://blog.eevans.xyz/</loc>
+    </url>
+    <url>
+        <loc>https://blog.eevans.xyz/archive/</loc>
+    </url>
+    <url>
+        <loc>https://blog.eevans.xyz/posts/</loc>
+    </url>
+    <url>
+        <loc>https://blog.eevans.xyz/posts/c23-macros/</loc>
+        <lastmod>2024-03-17</lastmod>
+    </url>
+    <url>
+        <loc>https://blog.eevans.xyz/posts/page/1/</loc>
+    </url>
+</urlset>
